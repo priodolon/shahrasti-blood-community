@@ -8,11 +8,26 @@
     <meta name="keywords" content="shahrasti, blood, community, donors, emergency, blood donation, shahrasti blood bank, চাঁদপুর, রক্তদান, শাহরাস্তি">
     <meta name="author" content="Shahrasti Blood Community">
     
+    <!-- Enhanced SEO Meta Tags -->
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="copyright" content="Shahrasti Blood Community">
+    <meta http-equiv="content-language" content="bn">
+    <link rel="canonical" href="https://priodolon.github.io/shahrasti-blood-community/">
+    
     <!-- Search Engine Optimization -->
     <meta property="og:title" content="Shahrasti Blood Community - Emergency Blood Donors">
     <meta property="og:description" content="জরুরী রক্তের প্রয়োজনে নির্ভরযোগ্য নেটওয়ার্ক। Find blood donors instantly in Shahrasti area.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourusername.github.io/shahrasti-blood-community">
+    <meta property="og:url" content="https://priodolon.github.io/shahrasti-blood-community">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1581594549595-35eda21814c5?w=800&h=400&fit=crop">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#1e3a8a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Shahrasti Blood">
+    <link rel="manifest" href="manifest.json">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,14 +37,15 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩸</text></svg>">
     
-    <!-- Structured Data for SEO -->
+    <!-- Enhanced Structured Data for SEO -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "Shahrasti Blood Community",
         "description": "Emergency blood donors network in Shahrasti, Chandpur",
-        "url": "https://yourusername.github.io/shahrasti-blood-community",
+        "url": "https://priodolon.github.io/shahrasti-blood-community/",
+        "logo": "https://img.icons8.com/color/192/000000/drop-of-blood.png",
         "address": {
             "@type": "PostalAddress",
             "addressLocality": "Shahrasti",
@@ -39,8 +55,13 @@
         "contactPoint": {
             "@type": "ContactPoint",
             "telephone": "+880-1615-807107",
-            "contactType": "Emergency service"
-        }
+            "contactType": "Emergency service",
+            "areaServed": "BD",
+            "availableLanguage": ["bn", "en"]
+        },
+        "sameAs": [
+            "https://facebook.com/groups/shahrasti-blood-community"
+        ]
     }
     </script>
     
@@ -768,7 +789,7 @@
         <div class="search-container">
             <div class="search-box">
                 <div class="search-icon">🔍</div>
-                <input type="text" id="searchInput" placeholder="সদস্য খুঁজুন... (নাম, রক্তের গ্রুপ, বা এলাকা)" onkeyup="searchMembers()">
+                <input type="text" id="searchInput" placeholder="সদস্য খুঁজুন... (নাম, রক্তের গ্রুপ, বা এলাকা)" onkeyup="debouncedSearch()">
             </div>
             <button class="menu-icon" onclick="toggleAdminMenu()" title="অ্যাডমিন মেনু" aria-label="Admin Menu">☰</button>
         </div>
@@ -993,15 +1014,35 @@
         let homepageSettings = JSON.parse(localStorage.getItem('homepageSettings')) || {
             fbGroupLink: "https://facebook.com/groups/shahrasti-blood-community",
             sliderImages: [
-                "https://images.unsplash.com/photo-1581594549595-35eda21814c5?w=800&h=300&fit=crop",
-                "https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=800&h=300&fit=crop",
-                "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&h=300&fit=crop"
+                "https://images.unsplash.com/photo-1581594549595-35eda21814c5?w=400&h=150&fit=crop",
+                "https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=400&h=150&fit=crop",
+                "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=400&h=150&fit=crop"
             ]
         };
         
         let isAdminLoggedIn = false;
         let currentSlide = 0;
         let slideInterval;
+
+        // =============================================
+        // Performance Optimization Functions
+        // =============================================
+        
+        // Debounce function for search optimization
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Create debounced search function
+        const debouncedSearch = debounce(searchMembers, 300);
 
         // =============================================
         // Utility Functions
@@ -1193,9 +1234,9 @@
             } else {
                 // Fallback default images
                 const defaultImages = [
-                    'https://images.unsplash.com/photo-1581594549595-35eda21814c5?w=800&h=300&fit=crop',
-                    'https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=800&h=300&fit=crop',
-                    'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&h=300&fit=crop'
+                    'https://images.unsplash.com/photo-1581594549595-35eda21814c5?w=400&h=150&fit=crop',
+                    'https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=400&h=150&fit=crop',
+                    'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=400&h=150&fit=crop'
                 ];
                 defaultImages.forEach((imgSrc, index) => {
                     const img = document.createElement('img');
@@ -1613,13 +1654,6 @@
                     localStorage.setItem('welcomeShown', 'true');
                 }
             }, 1500);
-            
-            // Service Worker Registration for PWA (future enhancement)
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => console.log('SW registered'))
-                    .catch(error => console.log('SW registration failed'));
-            }
         });
 
         // Online/Offline detection

@@ -7,7 +7,7 @@
 - ফেসবুক গ্রুপ: [এখানে ক্লিক করুন](ফেসবুক_গ্রুপ_লিংক)
 
 ## 🌐 Live Website
-https://yourusername.github.io/shahrasti-blood-community
+https://priodolon.github.io/shahrasti-blood-community/
 
 ## 📋 Features
 - জরুরী রক্তদাতা খুঁজুন
